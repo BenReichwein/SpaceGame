@@ -8,6 +8,8 @@ let easing = 0.05;
 let radius = 24;
 let edge = 30;
 let inner = edge + radius;
+let player;
+let enemy;
 
 
 // setup function (called ONCE when the page first loads)
@@ -44,5 +46,6 @@ function draw() {
     fill(169,169,169);
     rect(edge, edge, width - edge, height - edge);
     fill(255);
-    ellipse(mx, my, radius, radius);
+    player = ellipse(mx, my, radius, radius);
+    enemy = ellipse(150, 150, radius, radius); // 150, 150 is x, y. Radius, Radius is the size
 }
