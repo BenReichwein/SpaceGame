@@ -1,0 +1,28 @@
+Space Game:
+
+Player: Rocket
+Avoid: Asteroids
+Theme: Space
+
+Features:
+- The Rocket Ship will follow the mouse around the screen (With a little delay)
+- Asteroids will randomly go around the screen (maybe some directed towards the position of the player)
+- Asteroids randomly generate in different sizes. If the size is bigger it will be slower.
+- Pause the game by clicking [P]
+- Worm holes where the speed of player will slow down
+
+Power-ups:
+- Rock Crusher (Activated by [R]) When ready show a title in top right to click "[R] - Rock Crusher"
+- Super Speed "[F] - Super Speed"
+
+
+Operation:
+[-] Add Asteroids
+[-] Randomize spawn of the Asteroids and randomize the size of them. (Depending on size change speed)
+[-] If Asteroid touching player = game over
+[-] Get position of player and direct asteroid in that position
+[-] ? Starting Screen ? - (would have tutorial)
+[-] Add Score (Score++ ever second)
+[-] ? Give rocket flame particles (engine) ?
+[-] Worm hole randomized position and size ever 30 seconds (use score === 30)
+[-] If Player touching worm hole - speed = 0.3
