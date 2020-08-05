@@ -13,25 +13,34 @@ let edgeMargin = 30;
 let innerBorder = edgeMargin + pRadius;
 let player;
 let enemy;
+let playerImg;
+
 // Sleep thread
 const sleep = (milliseconds) => {
 	return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
+function preload() {
+    playerImg = loadImage("assets/player.png");
+    bg = loadImage('assets/background.jpg');
+}
+
 // setup function (called ONCE when the page first loads)
 function setup() {
-	// create canvas and append it to the page
-	bg = loadImage('assets/background.jpg');
+	ellipseMode(RADIUS);
+    rectMode(CORNERS);
+    imageMode(CENTER);
+    angleMode(DEGREES);
+
+    // create canvas and append it to the page
 	canvas = createCanvas(canvasWidth, canvasHeight);
-	canvas.parent('parent');
+    canvas.parent('parent');
+    
 
 	eRadius = Math.floor(Math.random() * 69) + 21; // Size of enemy (random)
 
-	ellipseMode(RADIUS);
-	rectMode(CORNERS);
-
 	// create a player
-	player = new Player(mx, my, pRadius, easing, innerBorder, width, height);
+	player = new Player(mx, my, easing, playerImg);
 }
 
 // called when the window is resized
@@ -42,8 +51,15 @@ function windowResized() {
 }
 // draw function (called 60 times per second)
 function draw() {
-	resizeCanvas(canvasWidth, canvasHeight); // resized canvas
-	background(bg); // Background
+
+    resizeCanvas(canvasWidth, canvasHeight); // resized canvas
+
+    // background
+    push()
+    translate(canvasWidth / 2, canvasHeight / 2)
+    image(bg, 0, 0) // Background
+    pop();
+
 	// Border
 	fill(169, 169, 169);
 	rect(edgeMargin, edgeMargin, width - edgeMargin, height - edgeMargin);
@@ -58,7 +74,7 @@ function draw() {
 	player.move();
 
 	collision();
-	movement();
+    movement();
 }
 
 function collision() {
