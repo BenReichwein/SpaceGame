@@ -6,7 +6,7 @@ let mx = 1; // Starting position for player
 let my = 1; // Starting position for player
 let ex = 150; // starting position for enemy
 let ey = 150; // Starting position for enemy
-let easing = 0.05;
+var easing = 0.05;
 let pRadius = 24;
 let eRadius;
 let edgeMargin = 30;
@@ -41,7 +41,10 @@ function setup() {
 
     // create a player
     player = new Player(mx, my, easing, playerImg);
+   
     enemy = new Enemy(ex, ey);
+
+    wormhole=new Wormhole();  //needs to be random
 }
 
 // called when the window is resized
@@ -69,19 +72,22 @@ function draw() {
     player.draw();
     // player movement
     player.move();
-    // draw the enemy
+    wormhole.draw();
     enemy.draw();
-    // enemy movement
     enemy.movement();
-
     collision();
 }
 
-function collision() {
+   function collision() {
     player.x = constrain(player.x, innerBorder, width - innerBorder); // If Player touches border
     player.y = constrain(player.y, innerBorder, height - innerBorder); // If Player touches border
     // Player touches enemy
-    if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, enemy.x, enemy.y, enemy.diameter)) {
-        player.x = 100;
+	if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, enemy.x, enemy.y, enemy.diameter)) {
+		player.x = 100;
+    }
+    if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, wormhole.x, wormhole.y, wormhole.diameter)) {
+        delete wormhole;
+        player.ease=0.3*player.ease;
+        wormhole=new Wormhole();
     }
 }
