@@ -80,7 +80,7 @@ function collision() {
     player.x = constrain(player.x, innerBorder, width - innerBorder); // If Player touches border
     player.y = constrain(player.y, innerBorder, height - innerBorder); // If Player touches border
     // Player touches enemy
-	if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, ex, ey, eRadius * 2)) {
+	if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, enemy.x, enemy.y, enemy.diameter)) {
 		player.x = 100;
 	}
 }

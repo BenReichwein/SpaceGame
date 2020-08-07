@@ -3,6 +3,7 @@ class Enemy {
         this.x = x;
         this.y = y;
         this.radius = Math.floor(Math.random() * 69) + 21; // Size of enemy (random)
+        this.diameter = this.radius * 2;
     }
 
     draw() {
