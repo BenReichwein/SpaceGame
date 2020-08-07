@@ -29,10 +29,6 @@ class Player {
 
     draw() {
 
-        if (keyIsDown(65)) {
-            this.angle = this.angle + 1;
-            rotate(this.angle);
-        }
         image(this.img, this.x, this.y)
         this.img.resize(this.width, this.height)
 
