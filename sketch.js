@@ -14,6 +14,7 @@ let innerBorder = edgeMargin + pRadius;
 let player;
 let enemy;
 let playerImg;
+let score = 0;
 
 // Sleep thread
 const sleep = (milliseconds) => {
@@ -52,7 +53,6 @@ function windowResized() {
 }
 // draw function (called 60 times per second)
 function draw() {
-
     resizeCanvas(canvasWidth, canvasHeight); // resized canvas
 
     // background
@@ -69,9 +69,16 @@ function draw() {
     player.draw();
     // player movement
     player.move();
-    //
+    // draw the enemy
     enemy.draw();
+    // enemy movement
     enemy.movement();
+
+    // Score System
+    score++;
+    fill(236, 217, 43);
+    textSize(24);
+    text(`SCORE: ${score}`, 30, 25);
 
     collision();
 }
@@ -80,7 +87,7 @@ function collision() {
     player.x = constrain(player.x, innerBorder, width - innerBorder); // If Player touches border
     player.y = constrain(player.y, innerBorder, height - innerBorder); // If Player touches border
     // Player touches enemy
-	if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, enemy.x, enemy.y, enemy.diameter)) {
-		player.x = 100;
-	}
+    if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, enemy.x, enemy.y, enemy.diameter)) {
+        player.x = 100;
+    }
 }
