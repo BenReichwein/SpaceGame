@@ -41,7 +41,7 @@ function setup() {
 
     // create a player
     player = new Player(mx, my, easing, playerImg);
-    enemy = new Enemy(ex, ey);
+    enemy = new Enemy();
 }
 
 // called when the window is resized

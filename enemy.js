@@ -1,13 +1,38 @@
 class Enemy {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
+    constructor() {
+        this.x = Math.floor(Math.random() * window.innerWidth);
+        this.y = Math.floor(Math.random() * window.innerHeight);
         this.radius = Math.floor(Math.random() * 69) + 21; // Size of enemy (random)
         this.diameter = this.radius * 2;
     }
 
     draw() {
+        var windowCenterX = window.innerWidth / 2
+        var windowCenterY = window.innerHeight / 2
+
         fill(100);
+
+        // top left quad
+        if (this.x < windowCenterX && this.y < windowCenterY) {
+            // 50% chance of the enemy spawning on the x or y axis
+            // if (Math.random() > 0.5) {
+            //     this.x = 30;
+            //     return;
+            // } else {
+            //     this.y = 30;
+            //     return;
+            // }
+        }
+        // top right quad
+        if (this.x > windowCenterX && this.y < windowCenterY) {
+        }
+        // bottom left quad
+        if (this.x < windowCenterX && this.y > windowCenterY) {
+        }
+        // bottom right quad
+        if (this.x > windowCenterX && this.y > windowCenterY) {
+        }
+
         ellipse(this.x, this.y, this.radius, this.radius);
 
     }
@@ -39,4 +64,10 @@ class Enemy {
             this.x += 0.2;
         }
     }
+
+    generate() {
+        var activeEnemies = [];
+
+    }
+
 }
