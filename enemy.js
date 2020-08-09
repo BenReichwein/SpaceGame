@@ -1,73 +1,79 @@
+function getRandomNum(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function choose(num1, num2) {
+    if (Math.random() > 0.5) {
+        return num1;
+    } else {
+        return num2;
+    }
+}
+
+
+
 class Enemy {
     constructor() {
-        this.x = Math.floor(Math.random() * window.innerWidth);
-        this.y = Math.floor(Math.random() * window.innerHeight);
+        // spawns in corners
+        this.x = choose(getRandomNum(10, 50), getRandomNum(window.innerWidth - 50, window.innerWidth - 10));
+        this.y = choose(getRandomNum(10, 50), getRandomNum(window.innerHeight - 50, window.innerHeight - 10));
+        this.moveX = getRandomNum(-5, 5);
+        this.moveY = getRandomNum(-5, 5);
         this.radius = Math.floor(Math.random() * 69) + 21; // Size of enemy (random)
         this.diameter = this.radius * 2;
+        this.ran = null;
+    }
+
+    checkDirection(playerX, playerY) {
+        // send enemy in general direction of player
+        if (playerX < this.x) {
+            if (this.moveX > 0) {
+                this.moveX = -this.moveX;
+            }
+        }
+
+        if (playerX > this.x) {
+            this.moveX = Math.abs(this.moveX);
+        }
+
+        if (playerY > this.y) {
+            this.moveY = Math.abs(this.moveY);
+        }
+
+        if (playerY < this.y) {
+            if (this.moveY > 0) {
+                this.movey = -this.moveY;
+            }
+        }
     }
 
     draw() {
-        var windowCenterX = window.innerWidth / 2
-        var windowCenterY = window.innerHeight / 2
-
         fill(100);
-
-        // top left quad
-        if (this.x < windowCenterX && this.y < windowCenterY) {
-            // 50% chance of the enemy spawning on the x or y axis
-            // if (Math.random() > 0.5) {
-            //     this.x = 30;
-            //     return;
-            // } else {
-            //     this.y = 30;
-            //     return;
-            // }
-        }
-        // top right quad
-        if (this.x > windowCenterX && this.y < windowCenterY) {
-        }
-        // bottom left quad
-        if (this.x < windowCenterX && this.y > windowCenterY) {
-        }
-        // bottom right quad
-        if (this.x > windowCenterX && this.y > windowCenterY) {
-        }
-
         ellipse(this.x, this.y, this.radius, this.radius);
-
     }
 
-    async movement() {
-        // Depending on the size it will change the speed
-        while (this.radius > 20 && this.radius < 30) {
-            await sleep(1000);
-            this.y += 0.5;
-            await sleep(1000);
-            this.x += 0.5;
-        }
-        while (this.radius > 30 && this.radius < 40) {
-            await sleep(700);
-            this.y += 0.4;
-            await sleep(700);
-            this.x += 0.4;
-        }
-        while (this.radius > 40 && this.radius < 50) {
-            await sleep(600);
-            this.y += 0.3;
-            await sleep(600);
-            this.x += 0.3;
-        }
-        while (this.radius > 50) {
-            await sleep(500);
-            this.y += 0.2;
-            await sleep(500);
-            this.x += 0.2;
-        }
-    }
+    movement() {
+        console.log(player.x, player.y)
 
-    generate() {
-        var activeEnemies = [];
+        if (this.ran === null) {
+            this.checkDirection(player.x, player.y)
+            this.ran = true;
+        }
 
+        this.y += this.moveY;
+
+        this.x += this.moveX;
+
+        // remove enemies from array when the leave the scree
+        if (this.x <= 0 ||
+            this.x >= window.innerWidth ||
+            this.y <= 0 ||
+            this.y >= window.innerHeight) {
+
+            enemies.splice(enemies.indexOf(this), 1);
+
+        }
+        console.log(enemies)
     }
 
 }

@@ -4,11 +4,8 @@ var canvasHeight = window.innerHeight;
 var canvasWidth = window.innerWidth;
 let mx = 500; // Starting position for player
 let my = 500; // Starting position for player
-let ex = 150; // starting position for enemy
-let ey = 150; // Starting position for enemy
 let easing = 0.05;
 let pRadius = 24;
-let eRadius;
 let edgeMargin = 30;
 let innerBorder = edgeMargin + pRadius;
 let player;
@@ -25,35 +22,36 @@ const sleep = (milliseconds) => {
 };
 
 function timer(score) {
+
     // return true every 7 seconds
-    switch (score) {
-        case score > 50000:
-            setTimeout(() => {
-                return true;
-            }, 7000)
-            break;
+    // switch (score) {
+    //     case score > 50000:
+    //         setTimeout(() => {
+    //             return true;
+    //         }, 7000)
+    //         break;
 
-        // every 5
-        case score > 100000:
-            setTimeout(() => {
-                return true;
-            }, 5000)
-            break;
+    //     // every 5
+    //     case score > 100000:
+    //         setTimeout(() => {
+    //             return true;
+    //         }, 5000)
+    //         break;
 
-        // every 3
-        case score > 200000:
-            setTimeout(() => {
-                return true;
-            }, 3000)
-            break;
+    //     // every 3
+    //     case score > 200000:
+    //         setTimeout(() => {
+    //             return true;
+    //         }, 3000)
+    //         break;
 
-        // every 10
-        default:
-            setTimeout(() => {
-                return true;
-            }, 10000);
-            break;
-    }
+    //     // every 10
+    //     default:
+    //         setTimeout(() => {
+    //             return true;
+    //         }, 10000);
+    //         break;
+    // }
 }
 
 function preload() {
@@ -73,16 +71,20 @@ function setup() {
     canvas.parent('parent');
     // Start button
     start = createButton("START");
-    start.position(canvasWidth/2-50, canvasHeight/2);
-    start.size(200,50);
+    start.position(canvasWidth / 2 - 50, canvasHeight / 2);
+    start.size(200, 50);
     start.mousePressed(updatemode);
-
-
-    eRadius = Math.floor(Math.random() * 69) + 21; // Size of enemy (random)
 
     // create a player
     player = new Player(mx, my, easing, playerImg);
 }
+
+// add 1st initial enemy
+enemies.push(new Enemy());
+// add enemy every 5 seconds
+setInterval(() => {
+    enemies.push(new Enemy());
+}, 3000)
 
 // called when the window is resized
 function windowResized() {
@@ -105,11 +107,11 @@ function draw() {
         // Title
         fill(236, 217, 43);
         textSize(64);
-        text(`SPACE TRAVEL`, canvasWidth/2-200, canvasHeight/2-100);
+        text(`SPACE TRAVEL`, canvasWidth / 2 - 200, canvasHeight / 2 - 100);
         // Score
         fill(236, 217, 43);
         textSize(30);
-        text(`SCORE: ${score}`, canvasWidth/2-50, canvasHeight/2+30);
+        text(`SCORE: ${score}`, canvasWidth / 2 - 50, canvasHeight / 2 + 30);
     }
     // Game play screen
     if (mode === 1) {
@@ -121,38 +123,25 @@ function draw() {
         player.draw();
         // player movement
         player.move();
-        // draw the enemy
-        enemy.draw();
-        // enemy movement
-        enemy.movement();
 
-    // Border
-    fill(169, 169, 169);
-    rect(edgeMargin, edgeMargin, width - edgeMargin, height - edgeMargin);
+        // only draw if there are enemies in array
+        if (enemies.length > 0) {
+            // loop through all enemies - draw them, then make them move
+            for (var i = 0; i < enemies.length; i++) {
+                // draw the enemy
+                enemies[i].draw();
+                // enemy movement
+                enemies[i].movement();
 
-    // Score System
-    score++;
-    fill(236, 217, 43);
-    textSize(24);
-    text(`SCORE: ${score}`, 30, 25);
+            }
+            console.log(enemies.length)
+        }
 
-    console.log(drawEnemy);
-    // draw the player
-    player.draw();
-    // player movement
-    player.move();
-    // draw the enemy
-    if (drawEnemy) {
-        console.log('here')
-        enemies.push(new Enemy());
-        drawEnemy = false;
-    }
-    for (var i = 0; i < enemies.length; i++) {
-        enemies[i].draw();
-        enemies[i].movement();
-    }
-    // enemy movement
-
+        // Score System
+        score++;
+        fill(236, 217, 43);
+        textSize(24);
+        text(`SCORE: ${score}`, 30, 25);
 
         collision();
     }
@@ -162,8 +151,10 @@ function collision() {
     player.x = constrain(player.x, innerBorder, width - innerBorder); // If Player touches border
     player.y = constrain(player.y, innerBorder, height - innerBorder); // If Player touches border
     // Player touches enemy
-    if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, enemy.x, enemy.y, enemy.diameter)) {
-        updatemode();
+    for (var i = 0; i < enemies.length; i++) {
+        if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, enemies[i].x, enemies[i].y, enemies[i].diameter)) {
+            updatemode();
+        }
     }
 }
 
