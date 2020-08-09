@@ -47,17 +47,6 @@ function setup() {
     player = new Player(mx, my, easing, playerImg);
 }
 
-setInterval(() => {
-    enemyInterval -= 750;
-}, 4000)
-
-// add 1st initial enemy
-enemies.push(new Enemy());
-// add enemy every 5 seconds
-setInterval(() => {
-    enemies.push(new Enemy());
-}, enemyInterval)
-
 // called when the window is resized
 function windowResized() {
     // redefine the width and heights
@@ -119,6 +108,21 @@ function draw() {
     }
 }
 
+function enemySpawn() {
+    if (mode === 1) {
+        setInterval(() => {
+            enemyInterval -= 750;
+        }, 3000)
+
+        // add 1st initial enemy
+        enemies.push(new Enemy());
+        // add enemy every 5 seconds
+        setInterval(() => {
+            enemies.push(new Enemy());
+        }, enemyInterval)
+    }
+}
+
 function collision() {
     player.x = constrain(player.x, innerBorder, width - innerBorder); // If Player touches border
     player.y = constrain(player.y, innerBorder, height - innerBorder); // If Player touches border
@@ -133,6 +137,7 @@ function collision() {
 function updatemode() {
     if (mode === 0) {
         mode++;
+        enemySpawn();
     } else {
         mode--;
     }
