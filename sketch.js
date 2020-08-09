@@ -15,11 +15,45 @@ let player;
 let enemy;
 let playerImg;
 let score = 0;
+let enemies = [];
+let drawEnemy = timer(score);
 
 // Sleep thread
 const sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
+
+function timer(score) {
+    // return true every 7 seconds
+    switch (score) {
+        case score > 50000:
+            setTimeout(() => {
+                return true;
+            }, 7000)
+            break;
+
+        // every 5
+        case score > 100000:
+            setTimeout(() => {
+                return true;
+            }, 5000)
+            break;
+
+        // every 3
+        case score > 200000:
+            setTimeout(() => {
+                return true;
+            }, 3000)
+            break;
+
+        // every 10
+        default:
+            setTimeout(() => {
+                return true;
+            }, 10000);
+            break;
+    }
+}
 
 function preload() {
     playerImg = loadImage("assets/player.png");
@@ -42,7 +76,7 @@ function setup() {
 
     // create a player
     player = new Player(mx, my, easing, playerImg);
-    enemy = new Enemy();
+
 }
 
 // called when the window is resized
@@ -53,6 +87,7 @@ function windowResized() {
 }
 // draw function (called 60 times per second)
 function draw() {
+
     resizeCanvas(canvasWidth, canvasHeight); // resized canvas
 
     // background
@@ -65,20 +100,29 @@ function draw() {
     fill(169, 169, 169);
     rect(edgeMargin, edgeMargin, width - edgeMargin, height - edgeMargin);
 
-    // draw the player
-    player.draw();
-    // player movement
-    player.move();
-    // draw the enemy
-    enemy.draw();
-    // enemy movement
-    enemy.movement();
-
     // Score System
     score++;
     fill(236, 217, 43);
     textSize(24);
     text(`SCORE: ${score}`, 30, 25);
+
+    console.log(drawEnemy);
+    // draw the player
+    player.draw();
+    // player movement
+    player.move();
+    // draw the enemy
+    if (drawEnemy) {
+        console.log('here')
+        enemies.push(new Enemy());
+        drawEnemy = false;
+    }
+    for (var i = 0; i < enemies.length; i++) {
+        enemies[i].draw();
+        enemies[i].movement();
+    }
+    // enemy movement
+
 
     collision();
 }
@@ -87,7 +131,9 @@ function collision() {
     player.x = constrain(player.x, innerBorder, width - innerBorder); // If Player touches border
     player.y = constrain(player.y, innerBorder, height - innerBorder); // If Player touches border
     // Player touches enemy
-    if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, enemy.x, enemy.y, enemy.diameter)) {
-        player.x = 100;
+    for (var i = 0; i < enemies.length; i++) {
+        if (collideRectCircle(player.x - (player.width / 2), player.y - (player.height / 2), player.width, player.height, enemies[i].x, enemies[i].y, enemies[i].diameter)) {
+            player.x = 100;
+        }
     }
 }
