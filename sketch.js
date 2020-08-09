@@ -116,8 +116,10 @@ function enemySpawn() {
 
         // add 1st initial enemy
         enemies.push(new Enemy());
+        enemies.push(new Enemy());
         // add enemy every 5 seconds
         setInterval(() => {
+            enemies.push(new Enemy());
             enemies.push(new Enemy());
         }, enemyInterval)
     }
