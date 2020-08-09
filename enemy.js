@@ -1,3 +1,6 @@
+var midX = window.innerWidth / 2;
+var midY = window.innerHeight / 2;
+
 function getRandomNum(min, max) {
     return Math.random() * (max - min) + min;
 }
@@ -17,34 +20,40 @@ class Enemy {
         // spawns in corners
         this.x = choose(getRandomNum(10, 50), getRandomNum(window.innerWidth - 50, window.innerWidth - 10));
         this.y = choose(getRandomNum(10, 50), getRandomNum(window.innerHeight - 50, window.innerHeight - 10));
-        this.moveX = getRandomNum(-5, 5);
-        this.moveY = getRandomNum(-5, 5);
+        this.moveX;
+        this.moveY;
         this.radius = Math.floor(Math.random() * 69) + 21; // Size of enemy (random)
         this.diameter = this.radius * 2;
         this.ran = null;
     }
 
     checkDirection(playerX, playerY) {
-        // send enemy in general direction of player
-        if (playerX < this.x) {
-            if (this.moveX > 0) {
-                this.moveX = -this.moveX;
-            }
+        var min = 1;
+        var max = 4;
+        // top left
+        if (this.x < midX && this.y < midY) {
+            this.moveX = getRandomNum(min, max);
+            this.moveY = getRandomNum(min, max);
         }
 
-        if (playerX > this.x) {
-            this.moveX = Math.abs(this.moveX);
+        // bottom left
+        if (this.x < midX && this.y > midY) {
+            this.moveX = getRandomNum(min, max);
+            this.moveY = getRandomNum(-max, -min);
         }
 
-        if (playerY > this.y) {
-            this.moveY = Math.abs(this.moveY);
+        // top right
+        if (this.x > midX && this.y < midY) {
+            this.moveX = getRandomNum(-max, -min);
+            this.moveY = getRandomNum(min, max);
         }
 
-        if (playerY < this.y) {
-            if (this.moveY > 0) {
-                this.movey = -this.moveY;
-            }
+        // bottom right
+        if (this.x > midX && this.y > midY) {
+            this.moveX = getRandomNum(-max, -min);
+            this.moveY = getRandomNum(-max, -min);
         }
+
     }
 
     draw() {
@@ -53,7 +62,6 @@ class Enemy {
     }
 
     movement() {
-        console.log(player.x, player.y)
 
         if (this.ran === null) {
             this.checkDirection(player.x, player.y)
@@ -73,7 +81,6 @@ class Enemy {
             enemies.splice(enemies.indexOf(this), 1);
 
         }
-        console.log(enemies)
     }
 
 }

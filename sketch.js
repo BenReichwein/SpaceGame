@@ -13,46 +13,14 @@ let enemy;
 let playerImg;
 let score = 0;
 let enemies = [];
-let drawEnemy = timer(score);
 let mode = 0;
+// 3.5 seconds
+let enemyInterval = 2000;
 
 // Sleep thread
 const sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
-
-function timer(score) {
-
-    // return true every 7 seconds
-    // switch (score) {
-    //     case score > 50000:
-    //         setTimeout(() => {
-    //             return true;
-    //         }, 7000)
-    //         break;
-
-    //     // every 5
-    //     case score > 100000:
-    //         setTimeout(() => {
-    //             return true;
-    //         }, 5000)
-    //         break;
-
-    //     // every 3
-    //     case score > 200000:
-    //         setTimeout(() => {
-    //             return true;
-    //         }, 3000)
-    //         break;
-
-    //     // every 10
-    //     default:
-    //         setTimeout(() => {
-    //             return true;
-    //         }, 10000);
-    //         break;
-    // }
-}
 
 function preload() {
     playerImg = loadImage("assets/player.png");
@@ -79,12 +47,16 @@ function setup() {
     player = new Player(mx, my, easing, playerImg);
 }
 
+setInterval(() => {
+    enemyInterval -= 750;
+}, 4000)
+
 // add 1st initial enemy
 enemies.push(new Enemy());
 // add enemy every 5 seconds
 setInterval(() => {
     enemies.push(new Enemy());
-}, 3000)
+}, enemyInterval)
 
 // called when the window is resized
 function windowResized() {
